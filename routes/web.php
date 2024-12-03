@@ -21,10 +21,8 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-    //管理画面トップページ
-    Route::get('top', function () {
-        return view('admin.top');
-    })->name('top');
+    //管理画面トップページ兼カテゴリー一覧表示
+    Route::get('top', [CategoryController::class, 'top'])->name('top');
 
     //カテゴリー管理
     Route::prefix('categories')->name('categories.')->group(function () {
