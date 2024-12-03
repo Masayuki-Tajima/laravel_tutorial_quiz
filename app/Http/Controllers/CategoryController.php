@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use Dotenv\Util\Str;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -46,11 +48,13 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     *カテゴリー詳細画面表示
      */
-    public function show(Category $category)
+    public function show(Request $request, int $categoryId)
     {
-        //
+        // dd($categoryId, $request);
+        $category = Category::findOrFail($categoryId);
+        dd($category);
     }
 
     /**
