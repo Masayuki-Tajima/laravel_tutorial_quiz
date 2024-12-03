@@ -21,10 +21,8 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-    //管理画面トップページ
-    Route::get('top', function () {
-        return view('admin.top');
-    })->name('top');
+    //管理画面トップページ兼カテゴリー一覧表示
+    Route::get('top', [CategoryController::class, 'top'])->name('top');
 
     //カテゴリー管理
     Route::prefix('categories')->name('categories.')->group(function () {
@@ -32,5 +30,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::get('create', [CategoryController::class, 'create'])->name('create');
         //カテゴリー新規登録処理
         Route::post('store', [CategoryController::class, 'store'])->name('store');
+        //カテゴリー詳細表示
+        Route::get('{categoryId}', [CategoryController::class, 'show'])->name('show');
     });
 });

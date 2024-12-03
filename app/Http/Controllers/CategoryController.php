@@ -5,15 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use Dotenv\Util\Str;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 管理画面トップページ兼カテゴリー一覧表示
      */
-    public function index()
+    public function top()
     {
-        //
+        //カテゴリー一覧を取得
+        $categories = Category::get();
+        // dd($categories);
+
+        return view('admin.top', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -40,11 +48,13 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     *カテゴリー詳細画面表示
      */
-    public function show(Category $category)
+    public function show(Request $request, int $categoryId)
     {
-        //
+        // dd($categoryId, $request);
+        $category = Category::findOrFail($categoryId);
+        dd($category);
     }
 
     /**
