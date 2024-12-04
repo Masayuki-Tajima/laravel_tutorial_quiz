@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('options', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('quiz_id')
+                ->constrained()         //quizテーブルのidと紐づけ
+                ->onUpdate('cascade')   //親テーブルが更新されたとき、同時に更新される
+                ->onDelete('cascade')   //親テーブルが削除されたとき、同時に削除される
+                ->comment('クイズID');
+            $table->string('content')->comment('選択肢の文章');
+            $table->smallInteger('is_correct')->comment('0:不正解,1:正解');
             $table->timestamps();
         });
     }
