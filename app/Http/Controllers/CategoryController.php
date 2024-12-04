@@ -64,7 +64,6 @@ class CategoryController extends Controller
         return view('admin.categories.edit', [
             'category' => $category,
         ]);
-
     }
 
     /**
@@ -72,7 +71,12 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, int $categoryId)
     {
-        //
+        $category = Category::findOrFail($categoryId);
+        $category->name        = $request->name;
+        $category->description = $request->description;
+        $category->save();
+
+        return redirect()->route('admin.categories.show', ['categoryId' => $categoryId]);
     }
 
     /**
