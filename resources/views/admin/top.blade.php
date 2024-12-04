@@ -12,7 +12,6 @@
                 カテゴリー新規登録
             </button>
         </div>
-
       </div>
     </div>
   </div>

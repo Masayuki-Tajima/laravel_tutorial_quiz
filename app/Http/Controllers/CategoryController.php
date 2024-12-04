@@ -17,7 +17,6 @@ class CategoryController extends Controller
     {
         //カテゴリー一覧を取得
         $categories = Category::get();
-        // dd($categories);
 
         return view('admin.top', [
             'categories' => $categories,
@@ -37,8 +36,6 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        // dd('カテゴリー新規登録処理のルートです', $request);
-        // dd($request->name, $request->description);
         $category = new Category();
         $category->name        = $request->name;
         $category->description = $request->description;
@@ -52,9 +49,10 @@ class CategoryController extends Controller
      */
     public function show(Request $request, int $categoryId)
     {
-        // dd($categoryId, $request);
         $category = Category::findOrFail($categoryId);
-        dd($category);
+        return view('admin.categories.show', [
+            'category' => $category,
+        ]);
     }
 
     /**
