@@ -9,7 +9,7 @@
             <div class="sm:w-1/2 ml-auto">
                 <div class="flex flex-wrap -m-2">
                     <div class="p-2 w-full">
-                        <button onclick="location.href='{{ route('admin.categories.create') }}'" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                        <button onclick="location.href='{{ route('admin.categories.edit', ['categoryId' => $category->id]) }}'" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
                             カテゴリー編集
                         </button>
                     </div>
