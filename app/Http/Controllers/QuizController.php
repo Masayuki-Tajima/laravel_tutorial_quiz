@@ -49,37 +49,13 @@ class QuizController extends Controller
             ['quiz_id' => $quiz->id, 'content' => $request->content4, 'is_correct' => $request->isCorrect4],
         ];
 
-        foreach($options as $option){
+        foreach ($options as $option) {
             $newOption = new Option();
             $newOption->quiz_id    = $option['quiz_id'];
             $newOption->content    = $option['content'];
             $newOption->is_correct = $option['is_correct'];
             $newOption->save();
         }
-
-        // $option1 = new Option();
-        // $option1->quiz_id    = $quiz->id;
-        // $option1->content    = $request->content1;
-        // $option1->is_correct = $request->isCorrect1;
-        // $option1->save();
-
-        // $option2 = new Option();
-        // $option2->quiz_id    = $quiz->id;
-        // $option2->content    = $request->content2;
-        // $option2->is_correct = $request->isCorrect2;
-        // $option2->save();
-
-        // $option3 = new Option();
-        // $option3->quiz_id    = $quiz->id;
-        // $option3->content    = $request->content3;
-        // $option3->is_correct = $request->isCorrect3;
-        // $option3->save();
-
-        // $option4 = new Option();
-        // $option4->quiz_id    = $quiz->id;
-        // $option4->content    = $request->content4;
-        // $option4->is_correct = $request->isCorrect4;
-        // $option4->save();
 
         return redirect()->route('admin.categories.show', ['categoryId' => $categoryId]);
     }
@@ -93,19 +69,24 @@ class QuizController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * クイズ編集画面
      */
-    public function edit(Quiz $quiz)
+    public function edit(Request $request, int $categoryId, int $quizId)
     {
-        //
+        $quiz = Quiz::with('category', 'options')->findOrFail($quizId);
+        return view('admin.quizzes.edit', [
+            'category' => $quiz->category,
+            'quiz'     => $quiz,
+            'options'  => $quiz->options
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateQuizRequest $request, Quiz $quiz)
+    public function update(UpdateQuizRequest $request,int $categoryId, int $quizId)
     {
-        //
+        dd($categoryId, $quizId, $request);
     }
 
     /**
