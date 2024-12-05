@@ -20,7 +20,6 @@ class PlayController extends Controller
     public function categories(Request $request, int $categoryId)
     {
         $category = Category::withCount('quizzes')->findOrFail($categoryId);
-        // dd($category->quizzes_count);
         return view('play.start', [
             'category'     => $category,
             'quizzesCount' => $category->quizzes_count,
@@ -28,7 +27,17 @@ class PlayController extends Controller
     }
 
     //クイズ出題画面
-    public function quizzes(Request $request, int $categoryId){
-        return view('play.quizzes');
+    public function quizzes(Request $request, int $categoryId)
+    {
+        //カテゴリーに紐づくクイズと選択肢をすべて取得する
+        $category = Category::with('quizzes.options')->findOrFail($categoryId);
+        //クイズをランダムに選ぶ
+        $quizzes = $category->quizzes->toArray();
+        shuffle($quizzes);
+        $quiz = $quizzes[0];
+
+        return view('play.quizzes', [
+            'quiz' => $quiz,
+        ]);
     }
 }
