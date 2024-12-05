@@ -47,7 +47,7 @@
                     <td class="px-4 py-3 text-lg text-gray-900">
                         <form action="{{ route('admin.categories.destroy', ['categoryId' => $category->id]) }}" method="post">
                             @csrf
-                            <button type="submit" class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
+                            <button type="submit" class="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">
                                 削除
                             </button>
                         </form>
