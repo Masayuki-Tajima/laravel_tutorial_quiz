@@ -84,16 +84,42 @@ class QuizController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateQuizRequest $request,int $categoryId, int $quizId)
+    public function update(UpdateQuizRequest $request, int $categoryId, int $quizId)
     {
-        dd($categoryId, $quizId, $request);
+        //Quizモデルの更新
+        $quiz = Quiz::findOrFail($quizId);
+        $quiz->question = $request->question;
+        $quiz->explanation = $request->explanation;
+        $quiz->save();
+
+        //Optionモデルの更新
+        $options = [
+            ['optionId' => (int)$request->optionId1, 'content' => $request->content1, 'is_correct' => $request->isCorrect1],
+            ['optionId' => (int)$request->optionId2, 'content' => $request->content2, 'is_correct' => $request->isCorrect2],
+            ['optionId' => (int)$request->optionId3, 'content' => $request->content3, 'is_correct' => $request->isCorrect3],
+            ['optionId' => (int)$request->optionId4, 'content' => $request->content4, 'is_correct' => $request->isCorrect4],
+        ];
+
+        foreach ($options as $option) {
+            $updateOption = Option::findOrFail($option['optionId']);
+            $updateOption->content = $option['content'];
+            $updateOption->is_correct = $option['is_correct'];
+            $updateOption->save();
+        }
+
+        //カテゴリー詳細画面にリダイレクト
+        return redirect()->route('admin.categories.show', ['categoryId' => $categoryId]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * クイズ削除処理
      */
-    public function destroy(Quiz $quiz)
+    public function destroy(Request $request, int $categoryId, int $quizId)
     {
-        //
+        // dd($categoryId, $quizId, $request);
+        $quiz = Quiz::findOrFail($quizId);
+        $quiz->delete();
+
+        return redirect()->route('admin.categories.show', ['categoryId' => $categoryId]);
     }
 }
