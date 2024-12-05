@@ -26,4 +26,9 @@ class PlayController extends Controller
             'quizzesCount' => $category->quizzes_count,
         ]);
     }
+
+    //クイズ出題画面
+    public function quizzes(Request $request, int $categoryId){
+        return view('play.quizzes');
+    }
 }
