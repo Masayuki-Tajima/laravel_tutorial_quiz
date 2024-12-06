@@ -9,7 +9,7 @@
                 <table class="table-auto w-full text-left whitespace-no-wrap">
                     <thead>
                         <tr>
-                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">番号</th>
+                            <th class="whitespace-nowrap w-10 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">番号</th>
                             <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">選択肢</th>
                             <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
                         </tr>
