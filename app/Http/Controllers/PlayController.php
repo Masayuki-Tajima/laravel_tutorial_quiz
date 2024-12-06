@@ -46,14 +46,20 @@ class PlayController extends Controller
     public function answer(Request $request, int $categoryId)
     {
         $quizId = $request->quizId;
-        $selectedOptions = $request->optionId;
+        $selectedOptions = $request->optionId === null ? [] : $request->optionId;
 
         $category = Category::with('quizzes.options')->findOrFail($categoryId);
         $quiz = $category->quizzes->firstWhere('id', $quizId);
         $quizOptions = $quiz->options->toArray();
-        $result = $this->isCorrectAnswer($selectedOptions, $quizOptions);
-        dd($result);
-        return view('play.answer');
+        $isCorrectAnswer = $this->isCorrectAnswer($selectedOptions, $quizOptions);
+
+        return view('play.answer', [
+            'isCorrectAnswer' => $isCorrectAnswer,
+            'quiz'            => $quiz->toArray(),
+            'quizOptions'     => $quizOptions,
+            'selectedOptions' => $selectedOptions,
+            'categoryId'      => $categoryId,
+        ]);
     }
 
     //プレイヤーの解答が正解か不正解かを判定
@@ -65,7 +71,7 @@ class PlayController extends Controller
         });
 
         //idの数字だけを抽出する
-        $correctOptionIds = array_map(function($option){
+        $correctOptionIds = array_map(function ($option) {
             return $option['id'];
         }, $correctOptions);
 
