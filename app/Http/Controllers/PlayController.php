@@ -45,6 +45,10 @@ class PlayController extends Controller
     //クイズ解答画面表示
     public function answer(Request $request, int $categoryId)
     {
-        dd($categoryId, $request);
+        // dd($categoryId, $request);
+        $quizId = $request->quizId;
+        $optionId = $request->optionId;
+
+        return view('play.answer');
     }
 }
