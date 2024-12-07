@@ -19,6 +19,9 @@ class PlayController extends Controller
     //クイズスタート画面
     public function categories(Request $request, int $categoryId)
     {
+        //セッションの解除
+        session()->forget('resultArray');
+
         $category = Category::withCount('quizzes')->findOrFail($categoryId);
         return view('play.start', [
             'category'     => $category,
@@ -56,7 +59,7 @@ class PlayController extends Controller
             return $item['result'] === null;
         })->first();
 
-        if(!$noAnswerResult){
+        if (!$noAnswerResult) {
             dd('未回答のクイズはなくなりました');
         }
 
@@ -79,6 +82,18 @@ class PlayController extends Controller
         $quiz = $category->quizzes->firstWhere('id', $quizId);
         $quizOptions = $quiz->options->toArray();
         $isCorrectAnswer = $this->isCorrectAnswer($selectedOptions, $quizOptions);
+
+        //セッションからクイズidと回答情報を取得
+        $resultArray = session('resultArray');
+        //回答結果をセッションに保存する
+        foreach($resultArray as $index => $result){
+            if($result['quizId'] === (int)$quizId){
+                $resultArray[$index]['result'] = $isCorrectAnswer;
+                break;
+            }
+        }
+        //  回答結果をセッションに上書きする
+        session(['resultArray' => $resultArray]);
 
         return view('play.answer', [
             'isCorrectAnswer' => $isCorrectAnswer,
