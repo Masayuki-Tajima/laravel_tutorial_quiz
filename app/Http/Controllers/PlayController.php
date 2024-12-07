@@ -39,17 +39,7 @@ class PlayController extends Controller
         $resultArray = session('resultArray');
         //初回アクセス時は、新たにクイズidの配列を作成
         if (is_null($resultArray)) {
-            //クイズidをすべて抽出
-            $quizIds = $category->quizzes->pluck('id')->toArray();
-            //クイズidの配列をランダムに入れ替える
-            shuffle($quizIds);
-            $resultArray = [];
-            foreach ($quizIds as $quizId) {
-                $resultArray[] = [
-                    'quizId' => $quizId,
-                    'result' => null,
-                ];
-            }
+            $resultArray = $this->setResultArrayForSession($category);
 
             session(['resultArray' => $resultArray]);
         }
@@ -120,6 +110,24 @@ class PlayController extends Controller
             'questionCount' => $questionCount,
             'correctCount' => $correctCount,
         ]);
+    }
+
+    //初回の時に、セッションにクイズのIdと回答状況を保存する
+    private function setResultArrayForSession(Category $category)
+    {
+        //クイズidをすべて抽出
+        $quizIds = $category->quizzes->pluck('id')->toArray();
+        //クイズidの配列をランダムに入れ替える
+        shuffle($quizIds);
+        $resultArray = [];
+        foreach ($quizIds as $quizId) {
+            $resultArray[] = [
+                'quizId' => $quizId,
+                'result' => null,
+            ];
+        }
+
+        return $resultArray;
     }
 
     //プレイヤーの解答が正解か不正解かを判定
