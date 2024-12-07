@@ -60,7 +60,9 @@ class PlayController extends Controller
         })->first();
 
         if (!$noAnswerResult) {
-            dd('未回答のクイズはなくなりました');
+            //すべてのクイズに回答したら、リザルト画面にリダイレクトする
+            // dd('未回答のクイズはなくなりました');
+            return redirect()->route('categories.quizzes.result', ['categoryId' => $categoryId]);
         }
 
         //クイズidに紐づくクイズを取得
@@ -86,8 +88,8 @@ class PlayController extends Controller
         //セッションからクイズidと回答情報を取得
         $resultArray = session('resultArray');
         //回答結果をセッションに保存する
-        foreach($resultArray as $index => $result){
-            if($result['quizId'] === (int)$quizId){
+        foreach ($resultArray as $index => $result) {
+            if ($result['quizId'] === (int)$quizId) {
                 $resultArray[$index]['result'] = $isCorrectAnswer;
                 break;
             }
@@ -101,6 +103,22 @@ class PlayController extends Controller
             'quizOptions'     => $quizOptions,
             'selectedOptions' => $selectedOptions,
             'categoryId'      => $categoryId,
+        ]);
+    }
+
+    //リザルト画面表示
+    public function result(Request $request, int $categoryId)
+    {
+        $resultArray = session('resultArray');
+        $questionCount = count($resultArray);
+        $correctCount = collect($resultArray)->filter(function ($result) {
+            return $result['result'] === true;
+        })->count();
+
+        return view('play.result', [
+            'categoryId' => $categoryId,
+            'questionCount' => $questionCount,
+            'correctCount' => $correctCount,
         ]);
     }
 
